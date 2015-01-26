@@ -1,11 +1,11 @@
 package Bubbles;
 
-import Bubbles.FileToString.FileToString;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -89,9 +89,8 @@ public class Bubbles {
     }
 
     static String getTextFromFile(String relativePath) throws IOException {
-        FileToString fileToString = new FileToString();
         String requestString = null;
-        requestString = fileToString.fileToString(relativePath);
+        requestString = fileToString(relativePath);
 
         return requestString;
     }
@@ -143,6 +142,20 @@ public class Bubbles {
 
     static String getServiceUrlFromFile() throws IOException {
         return getTextFromFile("serviceUrl.txt");
+    }
+    
+    static String fileToString(String fileName) throws FileNotFoundException, IOException {
+
+        String relativePathToFile = System.getProperty("user.dir") + File.separator + fileName;
+        String fileContentAsString = null;
+        File file = new File(relativePathToFile);
+        FileReader fileReader = new FileReader(file);
+        char[] charArray = new char[(int) file.length()];
+        fileReader.read(charArray);
+        fileContentAsString = new String(charArray);
+        fileReader.close();
+
+        return fileContentAsString;
     }
 
 }
